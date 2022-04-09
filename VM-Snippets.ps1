@@ -31,6 +31,9 @@ Update-AzVM
 Get-AzVM -Status
 Get-AzVM -Status -Name <name>
 
+#Redeploy VM (can't access)
+Set-AzVM -Redeploy -ResourceGroupName ‘ps-course-rg’ -Name “linux-1“
+
 #Get a VM object as a variable
 $vm= Get-AzVM -Name <name> -ResourceGroupName <name>
 
@@ -39,6 +42,17 @@ $ResourceGroupName = "RG"
 $vm = Get-AzVM  -Name MyVM -ResourceGroupName $ResourceGroupName
 $vm.HardwareProfile.vmSize = "Standard_DS3_v2"
 Update-AzVM -ResourceGroupName $ResourceGroupName  -VM $vm
+
+
+#Script to create multiple VMs:
+param([string]$resourceGroup)
+$adminCredential = Get-Credential -Message "Enter a username and password for the VM administrator."
+For ($i = 1; $i -le 3; $i++)
+{
+    $vmName = "ConferenceDemo" + $i
+    Write-Host "Creating VM: " $vmName
+    New-AzVm -ResourceGroupName $resourceGroup -Name $vmName -Credential $adminCredential -Image UbuntuLTS
+}
 
 #Get a VM's Public IP
 $vm | Get-AzPublicIpAddress
@@ -52,3 +66,7 @@ $Nic.IpConfigurations[0].PrivateIpAddress = "10.0.1.20"
 $Nic.IpConfigurations[0].PrivateIpAllocationMethod = "Static" 
 $Nic.Tag = @{Name = "Name"; Value = "Value"} 
 Set-AzNetworkInterface -NetworkInterface $Nic
+
+#Delete Disk
+Get-AzDisk -ResourceGroupName $vm.ResourceGroupName -DiskName $vm.StorageProfile.OSDisk.Name | Remove-AzDisk -Force
+
