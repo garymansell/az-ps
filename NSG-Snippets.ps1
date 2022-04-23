@@ -1,0 +1,4 @@
+# Create NSG with rules for HTTP and RDP
+$rule1 = New-AzNetworkSecurityRuleConfig -Name "RDP" -Description "Allow RDP" -Access Allow -Protocol Tcp -Direction Inbound -Priority 100 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 3389
+$rule2 = New-AzNetworkSecurityRuleConfig -Name "HTTP" -Description "Allow HTTP" -Access Allow -Protocol Tcp -Direction Inbound -Priority 101 -SourceAddressPrefix Internet -SourcePortRange * -DestinationAddressPrefix * -DestinationPortRange 80
+$nsg = New-AzNetworkSecurityGroup -ResourceGroupName "Gary-Admin-RG" -Location uksouth -Name "NSG-Frontend" -SecurityRules $rule1,$rule2
