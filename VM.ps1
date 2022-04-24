@@ -70,3 +70,15 @@ Set-AzNetworkInterface -NetworkInterface $Nic
 #Delete Disk
 Get-AzDisk -ResourceGroupName $vm.ResourceGroupName -DiskName $vm.StorageProfile.OSDisk.Name | Remove-AzDisk -Force
 
+# Upload a local VHD disk to Azure
+# Required parameters
+$path = <your-filepath-here>.vhd
+$resourceGroup = <your-resource-group-name>
+$location = <desired-region>
+$name = <desired-managed-disk-name>
+# Optional parameters
+# $Zone = <desired-zone>
+# $sku=<desired-SKU>
+
+# To use $Zone or #sku, add -Zone or -DiskSKU parameters to the command
+Add-AzVhd -LocalFilePath $path -ResourceGroupName $resourceGroup -Location $location -DiskName $name
