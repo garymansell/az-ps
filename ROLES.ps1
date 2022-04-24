@@ -3,7 +3,9 @@ New-AzRoleAssignment -SignInName janis.thomas@becausesecurity.com `
 -RoleDefinitionName "Virtual Machine Contributor" `
 -ResourceGroupName ps-course-rg
 
-Get-AzRoleAssignment - ResourceGroupName ps-course-rg
+Get-AzRoleAssignment -ResourceGroupName RG01    
+
+Get-AzDenyAssignment -ResourceGroupName RG01
 
 #Get Role definition actions
 
