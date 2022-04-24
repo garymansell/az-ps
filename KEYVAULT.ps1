@@ -13,3 +13,7 @@ Set-AzDiagnosticSetting -Name KeyVault-Diagnostics `
 -StorageAccountId /…/Microsoft.Storage/storageAccounts/mystorageaccount `
 -WorkspaceId /…/workspaces/myworkspace `
 -EventHubAuthorizationRuleId /…/RootManageSharedAccessKey
+
+
+# Add Access Policy to allow Keyvault to be used for template deployment (Admin Passwords)
+Set-AzKeyVaultAccessPolicy -VaultName Contoso -EnabledForTemplateDeployment
