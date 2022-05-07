@@ -24,4 +24,14 @@ Connect-AzAccount -Tenant 'xxxx-xxxx-xxxx-xxxx' -SubscriptionId 'yyyy-yyyy-yyyy-
 Get-AzLocation
 
 
+# Rename Azure Subscription
+get-azcontext -ListAvailable
+$contexts= get-azcontext -ListAvailable
+$contexts[1] | rename-azcontext -TargetName "Gary Dev"
+$contexts[2] | rename-azcontext -TargetName "Gary Lab"
+$contexts[0] | rename-azcontext -TargetName "Gary Prod"
+
+Select-AzContext "Gary Prod"
+
+Get-AzContextAutosaveSetting
 

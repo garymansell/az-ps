@@ -30,6 +30,8 @@ Update-AzVM
 #List VM(s)
 Get-AzVM -Status
 Get-AzVM -Status -Name <name>
+Get-AzVM -status | ft name, powerstate -AutoSize
+Get-AzVM -status | where {$_.powerstate -ne "VM Running"}
 
 #Redeploy VM (can't access)
 Set-AzVM -Redeploy -ResourceGroupName ‘ps-course-rg’ -Name “linux-1“
@@ -82,3 +84,25 @@ $name = <desired-managed-disk-name>
 
 # To use $Zone or #sku, add -Zone or -DiskSKU parameters to the command
 Add-AzVhd -LocalFilePath $path -ResourceGroupName $resourceGroup -Location $location -DiskName $name
+
+#Look at all extension images
+Get-AzVmImagePublisher -Location "southcentralus" | Get-AzVMExtensionImageType | Get-AzVMExtensionImage | Select Type, Version
+
+#View Windows Server images
+$loc = 'SouthCentralUS'
+#View the templates available
+Get-AzVMImagePublisher -Location $loc
+Get-AzVMImageOffer -Location $loc -PublisherName "MicrosoftWindowsServer"
+Get-AzVMImageSku -Location $loc -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer"
+Get-AzVMImage -Location $loc -PublisherName "MicrosoftWindowsServer" -Offer "WindowsServer" -Skus "2019-Datacenter-Core"
+#can use -latest when actually using
+
+#View Ubuntu
+#View the templates available
+Get-AzVMImagePublisher -Location $loc
+Get-AzVMImageOffer -Location $loc -PublisherName "Canonical"
+Get-AzVMImageSku -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer"
+Get-AzVMImage -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer" -Skus "19.04"
+Get-AzVMImage -Location $loc -PublisherName "Canonical" -Offer "UbuntuServer" -Skus "19.04" -Version 19.04.201908140
+
+
