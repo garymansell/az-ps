@@ -24,3 +24,9 @@ $zone = New-AzPrivateDnsZone -Name 'private.ps.com' `
 $link = New-AzPrivateDnsVirtualNetworkLink -ZoneName 'private.ps.com' `
 -ResourceGroupName 'pluralsight-rg' -Name 'hub-vnet' `
 -VirtualNetworkId $vnet.id -EnableRegistration
+
+# Attach NSG to VM NIC
+$nic = Get-AzNetworkInterface -ResourceGroupName "RG1" -Name "primary NIC of VM"
+$nsg = Get-AzNetworkSecurityGroup -ResourceGroupName "RG1" -Name "NSG01"
+$nic.NetworkSecurityGroup = $nsg
+$nic | Set-AzNetworkInterface 
