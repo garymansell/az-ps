@@ -5,3 +5,4 @@ New-AzAppServicePlan -Name $webappname -Location $location -ResourceGroupName my
 New-AzWebApp -Name testapp-ResourceGroupName webapp-rg -Location centralus -AppServicePlan az104plan
 # Scale Web App to 2 Workers
 Set-AzAppServicePlan -NumberofWorkers 2 -Name az104plan -ResourceGroupName webapp-rg
+
