@@ -21,7 +21,7 @@ Add-AzStorageAccountNetworkRule -ResourceGroupName "RG1" -Name "storage1" -Virtu
 
 
 #
-# Create Storage account and Share
+# Create Storage account and Share and then store creds on machine and mount it across reboots
 #
 # Create Storage Account
 New-AzStorageAccount -Name "garysashare" -ResourceGroupName "Gary-Admin-RG" -SkuName Standard_LRS -Location "uksouth"
@@ -31,3 +31,7 @@ $key=(Get-AzStorageAccountKey -ResourceGroupName "Gary-Admin-Rg" -Name "garysash
 $context=(New-AzStorageContext -StorageAccountName "garysashare" -StorageAccountKey $key).Context
 # Create Share using the context
 New-AzStorageShare -Name "garyshare" -Context $context
+# Store the credentials
+Invoke-Expression -Command "cmdkey /add:garysashare.file.core.windows.net /user:garysashare /pass:$key"
+# Mount the drive
+New-PSDrive -Name Z -PSProvider FileSystem -Root \\garysashare.file.core.windows.net\garyshare -Persist
