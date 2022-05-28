@@ -6,3 +6,6 @@ New-AzWebApp -Name testapp-ResourceGroupName webapp-rg -Location centralus -AppS
 # Scale Web App to 2 Workers
 Set-AzAppServicePlan -NumberofWorkers 2 -Name az104plan -ResourceGroupName webapp-rg
 
+# Use a custom DNS name for a root named domain name (i.e not www - so need to use "@")
+New-AzDnsRecordSet -Name "@" -RecordType "A" -ZoneName "company.com" -ResourceGroupName "APP-RG" -Ttl 600 -DnsRecords (New-AzDnsRecordConfig -Ipv4Address "x.x.x.x")
+New-AzDnsRecordSet -Name "@" -RecordType "TXT" -Ttl 600 -DnsRecords (New-AzDnsRecordConfig -Value "applicationname.azurewebsites.net")
