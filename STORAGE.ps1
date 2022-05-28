@@ -18,3 +18,16 @@ Get-AzVirtualNetwork -ResourceGroupName "RG1" -Name "VNet1" | \
     Set-AzVirtualNetwork
 $subnet = Get-AzVirtualNetwork -ResourceGroupName "RG1" -Name "VNet1" | Get-AzVirtualNetworkSubnetConfig -Name "appSubnet"
 Add-AzStorageAccountNetworkRule -ResourceGroupName "RG1" -Name "storage1" -VirtualNetworkResourceId $subnet.Id
+
+
+#
+# Create Storage account and Share
+#
+# Create Storage Account
+New-AzStorageAccount -Name "garysashare" -ResourceGroupName "Gary-Admin-RG" -SkuName Standard_LRS -Location "uksouth"
+# Get Storage Account Key
+$key=(Get-AzStorageAccountKey -ResourceGroupName "Gary-Admin-Rg" -Name "garysashare")[0].Value
+# Create Storage Account Context for access
+$context=(New-AzStorageContext -StorageAccountName "garysashare" -StorageAccountKey $key).Context
+# Create Share using the context
+New-AzStorageShare -Name "garyshare" -Context $context
